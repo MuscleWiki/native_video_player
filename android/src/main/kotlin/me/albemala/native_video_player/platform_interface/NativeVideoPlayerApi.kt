@@ -17,13 +17,17 @@ interface NativeVideoPlayerApiDelegate {
     fun setVolume(volume: Double)
 }
 
-const val invalidArgumentsErrorCode = "invalid_argument"
-const val invalidArgumentsErrorMessage = "Invalid arguments"
 
 class NativeVideoPlayerApi(
     messenger: BinaryMessenger,
     viewId: Int
 ) : MethodChannel.MethodCallHandler {
+
+    companion object Constants {
+        const val invalidArgumentsErrorCode = "invalid_argument"
+        const val invalidArgumentsErrorMessage = "Invalid arguments"
+    }
+
 
     var delegate: NativeVideoPlayerApiDelegate? = null
 
@@ -55,9 +59,9 @@ class NativeVideoPlayerApi(
         when (methodCall.method) {
             "loadVideoSource" -> {
                 val videoSourceAsMap = methodCall.arguments as? Map<*, *>
-                    ?: return result.error(invalidArgumentsErrorCode, invalidArgumentsErrorMessage, null)
+                    ?: return result.error(NativeVideoPlayerApi.Constants.invalidArgumentsErrorCode, NativeVideoPlayerApi.Constants.invalidArgumentsErrorMessage, null)
                 val videoSource = VideoSource.from(videoSourceAsMap)
-                    ?: return result.error(invalidArgumentsErrorCode, invalidArgumentsErrorMessage, null)
+                    ?: return result.error(NativeVideoPlayerApi.Constants.invalidArgumentsErrorCode, NativeVideoPlayerApi.Constants.invalidArgumentsErrorMessage, null)
                 delegate?.loadVideoSource(videoSource)
                 result.success(null)
             }
@@ -85,19 +89,19 @@ class NativeVideoPlayerApi(
             }
             "seekTo" -> {
                 val position = methodCall.arguments as? Int
-                    ?: return result.error(invalidArgumentsErrorCode, invalidArgumentsErrorMessage, null)
+                    ?: return result.error(NativeVideoPlayerApi.Constants.invalidArgumentsErrorCode, NativeVideoPlayerApi.Constants.invalidArgumentsErrorMessage, null)
                 delegate?.seekTo(position)
                 result.success(null)
             }
             "setPlaybackSpeed" -> {
                 val speed = methodCall.arguments as? Double
-                    ?: return result.error(invalidArgumentsErrorCode, invalidArgumentsErrorMessage, null)
+                    ?: return result.error(NativeVideoPlayerApi.Constants.invalidArgumentsErrorCode, NativeVideoPlayerApi.Constants.invalidArgumentsErrorMessage, null)
                 delegate?.setPlaybackSpeed(speed)
                 result.success(null)
             }
             "setVolume" -> {
                 val volume = methodCall.arguments as? Double
-                    ?: return result.error(invalidArgumentsErrorCode, invalidArgumentsErrorMessage, null)
+                    ?: return result.error(NativeVideoPlayerApi.Constants.invalidArgumentsErrorCode, NativeVideoPlayerApi.Constants.invalidArgumentsErrorMessage, null)
                 delegate?.setVolume(volume)
                 result.success(null)
             }
