@@ -89,9 +89,11 @@ class NativeVideoPlayerApi {
   }
 
   Future<int?> getPlaybackPosition() async {
-    return _channel.invokeMethod<int?>(
-      'getPlaybackPosition',
-    );
+    return 0 ;
+
+    // _channel.invokeMethod<int?>(
+    //   'getPlaybackPosition',
+    // );
   }
 
   Future<void> setVolume(double volume) async {
