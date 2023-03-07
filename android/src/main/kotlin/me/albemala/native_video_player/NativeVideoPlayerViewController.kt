@@ -1,11 +1,6 @@
 package me.albemala.native_video_player
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.content.Context.AUDIO_SERVICE
-import android.media.AudioAttributes
-import android.media.AudioFocusRequest
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -14,7 +9,10 @@ import android.widget.VideoView
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
 import me.albemala.native_video_player.platform_interface.*
-
+import android.content.Context.AUDIO_SERVICE
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 
 class NativeVideoPlayerViewController(
     messenger: BinaryMessenger,
@@ -25,14 +23,10 @@ class NativeVideoPlayerViewController(
     NativeVideoPlayerApiDelegate,
     MediaPlayer.OnPreparedListener,
     MediaPlayer.OnCompletionListener,
-    MediaPlayer.OnErrorListener
-{
+    MediaPlayer.OnErrorListener {
 
     private var mediaPlayer: MediaPlayer? = null
     private val videoView: VideoView
-    private val context: Context?
-
-
 
     init {
         api.delegate = this
@@ -46,7 +40,6 @@ class NativeVideoPlayerViewController(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             videoView.setAudioFocusRequest(AudioManager.AUDIOFOCUS_NONE)
         }
-        this.context = context
     }
 
     override fun getView(): View {
