@@ -17,6 +17,7 @@ public class NativeVideoPlayerViewController: NSObject, FlutterPlatformView {
             viewId: viewId
         )
         player = AVPlayer(playerItem: nil)
+        player.preventsDisplaySleepDuringVideoPlayback = false
         playerView = NativeVideoPlayerView(frame: frame, player: player)
         super.init()
 
