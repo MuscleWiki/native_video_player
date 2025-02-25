@@ -10,19 +10,19 @@ dependencies:
   flutter:
     sdk: flutter
 
-  path_provider: ^2.0.13
-  path: ^1.8.1
+  path_provider:
+  path:
 
-  json_annotation: ^4.7.0
+  json_annotation:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.3.3
-  json_serializable: ^6.5.4
+  build_runner:
+  json_serializable:
   # linting
-  very_good_analysis: ^3.1.0
+  very_good_analysis:
 
 flutter:
   plugin:
