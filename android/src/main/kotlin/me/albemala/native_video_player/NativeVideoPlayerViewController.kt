@@ -16,7 +16,11 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
-
+import android.annotation.TargetApi
+import android.content.Context.AUDIO_SERVICE
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 
 class NativeVideoPlayerViewController(
     private val messenger: BinaryMessenger,
@@ -46,6 +50,9 @@ class NativeVideoPlayerViewController(
         player.addListener(this)
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            videoView.setAudioFocusRequest(AudioManager.AUDIOFOCUS_NONE)
+        }
 
         initViews()
     }

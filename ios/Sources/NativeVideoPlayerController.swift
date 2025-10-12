@@ -13,7 +13,8 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
         super.init()
         
         player.addObserver(self, forKeyPath: "status", context: nil)
-        
+        player.preventsDisplaySleepDuringVideoPlayback = false
+
         // Allow audio playback when the Ring/Silent switch is set to silent
         do {
             try AVAudioSession.sharedInstance().setCategory(

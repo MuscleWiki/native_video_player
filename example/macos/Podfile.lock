@@ -1,6 +1,6 @@
 PODS:
   - FlutterMacOS (1.0.0)
-  - native_video_player (0.0.1):
+  - native_video_player (4.0.0):
     - FlutterMacOS
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
 
 SPEC CHECKSUMS:
-  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  native_video_player: c684fdc909bef61c53bf8a0767d120629835fdd1
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
+  native_video_player: 442514780e897f1ac2e5732b27de326f1a9ecd13
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
 
-PODFILE CHECKSUM: 7eb978b976557c8c1cd717d8185ec483fd090a82
+PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
 
 COCOAPODS: 1.16.2
