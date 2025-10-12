@@ -1,14 +1,6 @@
 package me.albemala.native_video_player
 
 
-import android.annotation.TargetApi
-import android.content.Context
-import android.content.Context.AUDIO_SERVICE
-import android.media.AudioAttributes
-import android.media.AudioFocusRequest
-import android.media.AudioManager
-import android.media.MediaPlayer
-
 import NativeVideoPlayerFlutterApi
 import NativeVideoPlayerHostApi
 import PlaybackEndedEvent
