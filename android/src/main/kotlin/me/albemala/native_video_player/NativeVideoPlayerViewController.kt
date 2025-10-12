@@ -1,13 +1,5 @@
 package me.albemala.native_video_player
 
-import NativeVideoPlayerFlutterApi
-import NativeVideoPlayerHostApi
-import PlaybackEndedEvent
-import PlaybackErrorEvent
-import PlaybackReadyEvent
-import VideoInfo
-import VideoSource
-import VideoSourceType
 import android.content.Context
 import android.net.Uri
 import android.view.SurfaceView
@@ -50,6 +42,9 @@ class NativeVideoPlayerViewController(
             messageChannelSuffix = viewId.toString(),
         )
         player.addListener(this)
+
+
+
         initViews()
     }
 

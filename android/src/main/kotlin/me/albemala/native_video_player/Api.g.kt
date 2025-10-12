@@ -2,6 +2,7 @@
 // See also: https://pub.dev/packages/pigeon
 @file:Suppress("UNCHECKED_CAST", "ArrayInDataClass")
 
+package me.albemala.native_video_player
 
 import android.util.Log
 import io.flutter.plugin.common.BasicMessageChannel

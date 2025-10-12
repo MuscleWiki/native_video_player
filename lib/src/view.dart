@@ -40,21 +40,31 @@ class _NativeVideoPlayerViewState extends State<NativeVideoPlayerView> {
   @override
   Widget build(BuildContext context) {
     const viewType = 'native_video_player_view';
-    final nativeView = switch (defaultTargetPlatform) {
-      TargetPlatform.android => AndroidView(
+    final Widget nativeView;
+
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        nativeView = AndroidView(
           viewType: viewType,
           onPlatformViewCreated: onPlatformViewCreated,
-        ),
-      TargetPlatform.iOS => UiKitView(
+        );
+        break;
+      case TargetPlatform.iOS:
+        nativeView = UiKitView(
           viewType: viewType,
           onPlatformViewCreated: onPlatformViewCreated,
-        ),
-      TargetPlatform.macOS => AppKitView(
+        );
+        break;
+      case TargetPlatform.macOS:
+        nativeView = AppKitView(
           viewType: viewType,
           onPlatformViewCreated: onPlatformViewCreated,
-        ),
-      _ => Text('$defaultTargetPlatform is not yet supported by this plugin.'),
-    };
+        );
+        break;
+      default:
+        nativeView = Text('$defaultTargetPlatform is not yet supported by this plugin.');
+        break;
+    }
 
     /// RepaintBoundary is a widget that isolates repaints
     return RepaintBoundary(
