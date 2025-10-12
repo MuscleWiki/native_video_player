@@ -50,9 +50,9 @@ class NativeVideoPlayerViewController(
         player.addListener(this)
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            videoView.setAudioFocusRequest(AudioManager.AUDIOFOCUS_NONE)
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            videoView.setAudioFocusRequest(AudioManager.AUDIOFOCUS_NONE)
+//        }
 
         initViews()
     }
