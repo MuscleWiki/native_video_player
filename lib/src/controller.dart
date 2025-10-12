@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:meta/meta.dart';
 import 'package:native_video_player/src/api.g.dart';
 import 'package:native_video_player/src/utils/file.dart';
 
@@ -97,26 +99,27 @@ class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   }
 
   Future<void> _handlePlaybackEvent(PlaybackEvent event) async {
-    switch (event) {
-      case PlaybackStatusChangedEvent():
-        _playbackStatus = event.status;
-      case PlaybackSpeedChangedEvent():
-        _playbackSpeed = event.speed;
-      case VolumeChangedEvent():
-        _volume = event.volume;
-      case PlaybackPositionChangedEvent():
-        final durationInMilliseconds = videoInfo?.durationInMilliseconds ?? 0;
-        var positionInMilliseconds = event.positionInMilliseconds;
-        if (positionInMilliseconds > durationInMilliseconds) {
-          positionInMilliseconds = durationInMilliseconds;
-        }
-        _playbackPosition = Duration(
-          milliseconds: positionInMilliseconds,
-        );
-      case PlaybackReadyEvent():
-        _videoInfo = await _hostApi.getVideoInfo();
-      case PlaybackEndedEvent():
-      case PlaybackErrorEvent():
+    if (event is PlaybackStatusChangedEvent) {
+      _playbackStatus = event.status;
+    } else if (event is PlaybackSpeedChangedEvent) {
+      _playbackSpeed = event.speed;
+    } else if (event is VolumeChangedEvent) {
+      _volume = event.volume;
+    } else if (event is PlaybackPositionChangedEvent) {
+      final durationInMilliseconds = videoInfo?.durationInMilliseconds ?? 0;
+      var position = event.positionInMilliseconds;
+      if (position > durationInMilliseconds) {
+        position = durationInMilliseconds;
+      }
+      _playbackPosition = Duration(
+        milliseconds: position,
+      );
+    } else if (event is PlaybackReadyEvent) {
+      _videoInfo = await _hostApi.getVideoInfo();
+    } else if (event is PlaybackEndedEvent) {
+      // Handle playback ended
+    } else if (event is PlaybackErrorEvent) {
+      // Handle playback error
     }
   }
 

@@ -2,6 +2,7 @@ package me.albemala.native_video_player
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
+
 class NativeVideoPlayerPlugin : FlutterPlugin {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
