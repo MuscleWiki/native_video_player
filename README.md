@@ -2,11 +2,13 @@
 
 [![Pub](https://img.shields.io/pub/v/native_video_player)](https://pub.dev/packages/native_video_player)
 
-A Flutter widget to play videos on iOS and Android using a native implementation.
+A Flutter widget to play videos on iOS, macOS and Android using a native implementation.
 
-|             | Android | iOS  |
-|:------------|:--------|:-----|
-| **Support** | 16+     | 9.0+ |
+Perfect for building video-centric apps like TikTok, Instagram Reels, or YouTube Shorts, as well as general video playback needs.
+
+|             | Android | iOS  | macOS |
+|:------------|:--------|:-----|:------|
+| **Support** | 16+     | 9.0+ | 10.11+|
 
 <img src="https://raw.githubusercontent.com/albemala/native_video_player/main/screenshots/1.gif" width="320"/>
 <img src="https://raw.githubusercontent.com/albemala/native_video_player/main/screenshots/2.gif" width="320"/>
@@ -14,7 +16,7 @@ A Flutter widget to play videos on iOS and Android using a native implementation
 
 ### Implementation
 
-- On iOS, the video is displayed using a combination
+- On iOS and macOS, the video is displayed using a combination
   of [AVPlayer](https://developer.apple.com/documentation/avfoundation/avplayer)
   and [AVPlayerLayer](https://developer.apple.com/documentation/avfoundation/avplayerlayer).
 - On Android, the video is displayed using a combination
@@ -30,11 +32,12 @@ A Flutter widget to play videos on iOS and Android using a native implementation
 Widget build(BuildContext context) {
   return NativeVideoPlayerView(
     onViewReady: (controller) async {
-      final videoSource = await VideoSource.init(
-        path: 'path/to/file',
-        type: VideoSourceType,
+      await controller.loadVideo(
+        VideoSource(
+          path: 'path/to/file',
+          type: VideoSourceType.asset,
+        ),
       );
-      await controller.loadVideoSource(videoSource);
     },
   );
 }
@@ -43,41 +46,103 @@ Widget build(BuildContext context) {
 ### Listen to events
 
 ```dart
-controller.onPlaybackReady.addListener(() {
-  // Emitted when the video loaded successfully and it's ready to play.
-  // At this point, videoInfo is available.
-  final videoInfo = controller.videoInfo;
-  final videoWidth = videoInfo.width;
-  final videoHeight = videoInfo.height;
-  final videoDuration = videoInfo.duration;
+StreamSubscription<void>? _eventsSubscription;
+
+_eventsSubscription = controller.events.listen((event) {
+  switch (event) {
+    case PlaybackStatusChangedEvent():
+      // Emitted when playback status changes (playing, paused, or stopped)
+      final playbackStatus = controller.playbackStatus;
+    case PlaybackPositionChangedEvent():
+      // Emitted when playback position changes
+      final position = controller.playbackPosition;
+    case PlaybackReadyEvent():
+      // Emitted when video is loaded and ready to play
+      final height = controller.videoInfo?.height;
+      final width = controller.videoInfo?.width;
+      final duration = controller.videoInfo?.duration;
+    case PlaybackEndedEvent():
+      // Emitted when video playback ends
+    case PlaybackSpeedChangedEvent():
+      // Emitted when playback speed changes
+    case VolumeChangedEvent():
+      // Emitted when volume changes
+    case PlaybackErrorEvent():
+      // Emitted when an error occurs
+      print('Playback error: ${event.errorMessage}');
+  }
 });
-controller.onPlaybackStatusChanged.addListener(() {
-  final playbackStatus = controller.playbackInfo.status;
-  // playbackStatus can be playing, paused, or stopped. 
-});
-controller.onPlaybackPositionChanged.addListener(() {
-  final playbackPosition = controller.playbackInfo.position;
-});
-controller.onPlaybackEnded.addListener(() {
-  // Emitted when the video has finished playing.
-});
+
+// Don't forget to dispose the subscription
+@override
+void dispose() {
+  _eventsSubscription?.cancel();
+  super.dispose();
+}
 ```
 
 ### Autoplay
 
 ```dart
-controller.onPlaybackReady.addListener(() {
-  controller.play();
-});
+bool isAutoplayEnabled = false;
+
+Future<void> _loadVideoSource() async {
+  await controller.loadVideo(videoSource);
+  if (isAutoplayEnabled) {
+    await controller.play();
+  }
+}
 ```
 
 ### Playback loop
 
 ```dart
-controller.onPlaybackEnded.addListener(() {
-  controller.play();
+bool isPlaybackLoopEnabled = false;
+
+void _onPlaybackEnded() {
+  if (isPlaybackLoopEnabled) {
+    controller.stop();
+    controller.play();
+  }
+}
+
+// Set up event listener
+_eventsSubscription = controller.events.listen((event) {
+  switch (event) {
+    case PlaybackEndedEvent():
+      _onPlaybackEnded();
+    // ... handle other events ...
+  }
 });
 ```
+
+### Controller disposal
+
+```dart
+class VideoPlayerState extends State<VideoPlayer> {
+  NativeVideoPlayerController? _controller;
+  StreamSubscription<void>? _eventsSubscription;
+
+  Future<void> _initController(NativeVideoPlayerController controller) async {
+    _controller = controller;
+    _eventsSubscription = _controller?.events.listen((event) {
+      // ... handle events ...
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel any event subscriptions
+    _eventsSubscription?.cancel();
+    // Dispose of the controller
+    _controller?.dispose();
+    _controller = null;
+    super.dispose();
+  }
+}
+```
+
+It's important to properly dispose of both the controller and any event subscriptions when you're done with them to prevent memory leaks. This typically happens in the `dispose()` method of your widget's State.
 
 ### Advanced usage
 
@@ -85,17 +150,19 @@ See the [example app](https://github.com/albemala/native_video_player/tree/main/
 
 ## Support this project
 
-<a href="https://www.buymeacoffee.com/albemala" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+- [GitHub Sponsor](https://github.com/sponsors/albemala)
+- [Buy Me A Coffee](https://www.buymeacoffee.com/albemala)
+
+Sponsors:
+
+- [@enteio](https://github.com/enteio)
+- [@bsutton](https://github.com/bsutton)
+
+Thank you to all sponsors for supporting this project! ❤️
 
 ## Other projects
 
-🧰 **[exabox](https://exabox.app/)** — Essential tools for developers: All the tools you need in one single app.
-
-😃 **[Ejimo](https://github.com/albemala/emoji-picker)** — Emoji and symbol picker
-
-🗺️ **[WMap](https://wmap.albemala.me/)** — Create beautiful, minimal, custom map wallpapers and backgrounds for your phone or tablet.
-
-🎨 **[iro‿iro](https://iro-iro.albemala.me/)** — Rearrange the colors to form beautiful patterns in this relaxing color puzzle game.
+[All my projects](https://projects.albemala.me/)
 
 ## Credits
 
