@@ -39,6 +39,10 @@ class NativeVideoPlayerView extends StatefulWidget {
 class _NativeVideoPlayerViewState extends State<NativeVideoPlayerView> {
   @override
   Widget build(BuildContext context) {
+    if (!(ModalRoute.of(context)?.isCurrent ?? true)) {
+      return const SizedBox.expand();
+    }
+
     const viewType = 'native_video_player_view';
     final Widget nativeView;
 
